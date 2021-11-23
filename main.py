@@ -60,7 +60,7 @@ def view_notes():
     for user in notes_data1['notes']:
         notes = user['notes']
         notes_data3.append(notes)
-       
+
     data = ""   
     for note in notes_data3:
         data = f"{note}\n" + data + "\n"            
@@ -72,9 +72,26 @@ def view_notes():
     return data
 
 
+def add_notes():
+    destroy_widgets()
+    bg3 = tk.Label(root, image=img2).place(x=0, y=0)
+
+    tk.Label(root, text="Write a note").place(x=270, y=50)
+
+    note_widget = tk.Text(root, width=50, height=10)
+    note_widget.place(x=150, y=100)
+    
+    back_button = tk.Button(root, text="Back")
+    back_button.place(x=350, y=280)
+
+    save_button = tk.Button(root, text="Save")
+    save_button.place(x=450, y=280)
+
+
+
 def after_login():
     bg3 = tk.Label(root, image=img2).place(x=0, y=0)
-    add_notes_button = tk.Button(root, text="Add notes", width=50)
+    add_notes_button = tk.Button(root, text="Add notes", width=50, command=add_notes)
     view_notes_button = tk.Button(root, text="View notes", width=50, command=view_notes)
     delete_notes_button = tk.Button(root, text="Delete notes", width=50)
     view_notes_button.place(x=50, y=100)
