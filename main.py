@@ -66,9 +66,11 @@ def view_notes():
         data = f"{note}\n" + data + "\n"            
     label1 = tk.Text(root, spacing2=5, background="#2E4C6D", height=5, font=("Times New Roman", 16), border=0, width=50, foreground='#F7F7F7')
     label1.insert(INSERT, f"{data}")
-    label1.place(x=130, y=0)
+    label1.place(x=130, y=50)
     label1.config(state=DISABLED)
     root.update()
+    back_button = tk.Button(root, text="Back", command=after_login)
+    back_button.place(x=300, y=200)
     return data
 
 
@@ -81,13 +83,19 @@ def add_notes():
     note_widget = tk.Text(root, width=50, height=10)
     note_widget.place(x=150, y=100)
     
-    back_button = tk.Button(root, text="Back")
+    back_button = tk.Button(root, text="Back", command=after_login)
     back_button.place(x=350, y=280)
+    
+    def save_notes():
+        note = note_widget.get("1.0",'end-1c')
+        user_id = _id
+        payload = {"note": note, "user_id": user_id}
+        if len(note) > 1:
+            req = requests.post('http://127.0.0.1:5000/note', data=payload)
+            return messagebox.showinfo('successful', "Note added successfuly")
 
-    save_button = tk.Button(root, text="Save")
+    save_button = tk.Button(root, text="Save", command=save_notes)
     save_button.place(x=450, y=280)
-
-
 
 def after_login():
     bg3 = tk.Label(root, image=img2).place(x=0, y=0)
@@ -184,19 +192,3 @@ register_button.place(x=260, y=300)
 
 
 root.mainloop()
-
-
-
-    
-# req_notes = requests.get(f'http://127.0.0.1:5000/note/1')
-# print(req_notes.status_code)
-# notes_data = req_notes.text
-# # try:
-# notes_data1 = json.loads(notes_data)
-# for note in notes_data1['notes']:
-#     note = note['notes']
-#     note2 = []
-#     note2.append(note)
-#     print(note2)
-
-
