@@ -57,18 +57,23 @@ def view_notes():
     notes_data = req_notes.text
     notes_data1 = json.loads(notes_data)
     notes_data3 = []
-    for user in notes_data1['notes']:
-        notes = user['notes']
-        notes_data3.append(notes)
+    data = ""
+    try:
+        for user in notes_data1['notes']:
+            notes = user['notes']
+            notes_data3.append(notes)
 
-    data = ""   
-    for note in notes_data3:
-        data = f"{note}\n" + data + "\n"            
-    label1 = tk.Text(root, spacing2=5, background="#2E4C6D", height=5, font=("Times New Roman", 16), border=0, width=50, foreground='#F7F7F7')
-    label1.insert(INSERT, f"{data}")
-    label1.place(x=130, y=50)
-    label1.config(state=DISABLED)
-    root.update()
+       
+        for note in notes_data3:
+            data = f"{note}\n" + data + "\n"  
+              
+        label1 = tk.Text(root, spacing2=5, background="#2E4C6D", height=5, font=("Times New Roman", 16), border=0, width=50, foreground='#F7F7F7')
+        label1.insert(INSERT, f"{data}")
+        label1.place(x=130, y=50)
+        label1.config(state=DISABLED)
+        root.update()
+    except:
+        tk.Label(root, text="You have no notes saved").place(x=200, y=150)
     back_button = tk.Button(root, text="Back", command=after_login)
     back_button.place(x=300, y=200)
     return data
@@ -165,6 +170,19 @@ def register():
     def check_register():
         username = username_register.get()
         password = password_register.get()
+
+        username = username.lower()
+        password = password.lower()
+
+        req = requests.get('http://127.0.0.1:5000/users')
+        req = req.text
+        req = json.loads(req)
+        users = req['users']
+        for user in users:
+            username1 = user['username']
+            if username1 == username:
+                return messagebox.showerror("ERROR", "User name already exists")
+
 
         if len(password) < 8:
             return messagebox.showinfo('ERROR', "password must be greater than 8 charachters")
