@@ -7,7 +7,7 @@ import json
 import tkinter as tk
 from tkinter import Entry, Image, Text, messagebox
 from PIL import ImageTk, Image
-
+import hashlib
 
 global _id
 _id = None
@@ -118,6 +118,8 @@ def check_user(io=None):
     req = json.loads(req)
     username = username_entry.get()
     password = Password_entry.get()
+    password = str(hashlib.sha256(password.encode()).hexdigest())
+
     for usernames in req['users']:
 
         user_id = usernames['ID']
