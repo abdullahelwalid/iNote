@@ -118,7 +118,7 @@ def check_user(io=None):
     req = json.loads(req)
     username = username_entry.get()
     password = Password_entry.get()
-    password = str(hashlib.sha256(password.encode()).hexdigest())
+    password = hashlib.sha256(password.encode()).hexdigest()
 
     for usernames in req['users']:
 
